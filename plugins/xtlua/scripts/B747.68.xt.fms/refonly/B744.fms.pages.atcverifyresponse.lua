@@ -3,7 +3,7 @@ fmsPages["ATCVERIFYRESPONSE"].getPage=function(self,pgNo,fmsID)--dynamic pages n
     return{
 
 "   VERIFY RESPONSE      ",
-"                        ",		               
+"                        ",
 "WILCO                   ",
 "                        ",
 "                        ",
@@ -21,7 +21,7 @@ end
 fmsPages["ATCVERIFYRESPONSE"].getSmallPage=function(self,pgNo,fmsID)--dynamic pages need to be this way
     return{
 "                    1/1 ",
-"                        ",		               
+"                        ",
 "                        ",
 "                        ",
 "                        ",
