@@ -107,6 +107,16 @@ fmsPages["MAINTSIMCONFIG"].getPage=function(self,pgNo,fmsID)
 		local pfd_style = string.format("%-3s", simConfigData["data"].PLANE.pfd_style)
 		local nd_style = string.format("%-3s", simConfigData["data"].PLANE.nd_style)
 		
+		--crazytimtimtim
+		if string.match(engines, "PW") then
+			B747DR_engineType = 0
+		elseif string.match(engines, "CF") then
+			B747DR_engineType = 1
+		elseif string.match(engines, "RB") then
+			B747DR_engineType = 2
+		end
+		--crazytitimtim end
+		
 		return {
 		"      PLANE CONFIG      ",
 		"                        ",
