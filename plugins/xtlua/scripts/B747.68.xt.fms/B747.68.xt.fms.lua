@@ -291,7 +291,7 @@ B747DR_elevator_trim				    = deferred_dataref("laminar/B747/fmc/elevator_trim",
 --Sound Options (crazytimtimtim + Matt726)
 B747DR_SNDoptions			        	= deferred_dataref("laminar/B747/fmod/options", "array[5]")
 
--- Engine Type (crazytimtimtim)
+--Engine Type (crazytimtimtim + Matt726)
 B747DR_engineType                       = deferred_dataref("laminar/B747/engines/type", "number")
 
 --Simulator Config Options
