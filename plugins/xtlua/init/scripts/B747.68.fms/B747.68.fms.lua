@@ -101,7 +101,7 @@ B747DR_ND_Wind_Bearing					= deferred_dataref("laminar/B747/nd/wind_bearing", "n
 B747DR_elevator_trim				    = deferred_dataref("laminar/B747/fmc/elevator_trim", "number")
 
 --Sound Options (crazytimtimtim + Matt726)
-B747DR_SNDoptions			        	= deferred_dataref("laminar/B747/fmod/options", "array[5]")
+B747DR_SNDoptions			        	= deferred_dataref("laminar/B747/fmod/options", "array[4]")
 
 --Engine Type (crazytimtimtim + Matt726)
 B747DR_engineType                       = deferred_dataref("laminar/B747/engines/type", "number")
