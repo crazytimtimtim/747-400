@@ -136,24 +136,24 @@ fmsPages["MAINTSIMCONFIG"].getPage=function(self,pgNo,fmsID)
 	elseif pgNo == 4 then
 		-- Sound options (crazytimtimtim + Matt726)
 	
-		local lineA = "          GPWS           "
+		local lineA = "         ALARMS          "
 		local lineB = "        SEAT BELT        "
 		local lineC = "           PA            "
 		local lineD = "          MUSIC          "
-		local lineE = "         ALARMS          "
 
-		fmsFunctionsDefs["MAINTSIMCONFIG"]["L1"]={"setDref","gpwsOption"}
+		fmsFunctionsDefs["MAINTSIMCONFIG"]["L1"]={"setDref","alarmsOption"}
 		fmsFunctionsDefs["MAINTSIMCONFIG"]["L2"]={"setDref","seatBeltOption"}
 		fmsFunctionsDefs["MAINTSIMCONFIG"]["L3"]={"setDref","paOption"}
 		fmsFunctionsDefs["MAINTSIMCONFIG"]["L4"]={"setDref","musicOption"}
-		fmsFunctionsDefs["MAINTSIMCONFIG"]["L5"]={"setDref","alarmsOption"}
 
 		if B747DR_SNDoptions[0] == 0 then
-			lineA = "<USE OLD GPWS           "
-		else
-			lineA = "<USE NEW GPWS           "
+			lineA = "<USE NEW WARNINGS        "
+		elseif B747DR_SNDoptions[0] == 1 then
+			lineA = "<USE CLASSIC WARN        "
+		elseif B747DR_SNDoptions[0] == 2 then
+			lineA = "<USE DEFAULT WARN        "
 		end
-
+		
 		if B747DR_SNDoptions[1] == 0 then
 			lineB = "<USE SEATBELT SND 2      "
 		else
@@ -172,13 +172,7 @@ fmsPages["MAINTSIMCONFIG"].getPage=function(self,pgNo,fmsID)
 			lineD = "<ENABLE BRD MUSIC       "
 		end
 
-		if B747DR_SNDoptions[4] == 0 then
-			lineE = "<USE NEW WARNINGS        "
-		elseif B747DR_SNDoptions[4] == 1 then
-			lineE = "<USE CLASSIC WARN        "
-		elseif B747DR_SNDoptions[4] == 2 then
-			lineE = "<USE DEFAULT WARN        "
-		end
+
 
 		return{
 
@@ -192,7 +186,7 @@ fmsPages["MAINTSIMCONFIG"].getPage=function(self,pgNo,fmsID)
 		"                        ",
 		lineD,
 		"                        ",
-		lineE,
+		"                        ",
 		"------------------------",
 		"<MAINT                  "
 		}
@@ -291,18 +285,19 @@ fmsPages["MAINTSIMCONFIG"].getSmallPage=function(self,pgNo,fmsID)
 	elseif pgNo == 4 then
 		-- smallPage for SoundConfig
 
-		local lineA = "                   (GPWS)"
+		local lineA = "                 (ALARMS)"
 		local lineB = "                  (STBLT)"
 		local lineC = "                     (PA)"
 		local lineD = "                  (MUSIC)"
-		local lineE = "                 (ALARMS)"
 
 		if B747DR_SNDoptions[0] == 0 then
+			lineA = "                      (DEF)"
+		elseif B747DR_SNDoptions[0] == 1 then
 			lineA = "                      (NEW)"
-		else
-			lineA = "                  (CLASSIC)"
+		elseif B747DR_SNDoptions[0] == 2 then
+			lineA = "                      (OLD)"
 		end
-
+		
 		if B747DR_SNDoptions[1] == 0 then
 			lineB = "                      (1/2)"
 		else
@@ -321,13 +316,7 @@ fmsPages["MAINTSIMCONFIG"].getSmallPage=function(self,pgNo,fmsID)
 			lineD = "                      (OFF)"
 		end
 
-		if B747DR_SNDoptions[4] == 0 then
-			lineE = "                      (2/3)"
-		elseif B747DR_SNDoptions[4] == 1 then
-			lineE = "                      (3/3)"
-		elseif B747DR_SNDoptions[4] == 2 then
-			lineE = "                      (1/3)"
-		end
+
 
 		return {
 			"                        4/4",
@@ -340,7 +329,7 @@ fmsPages["MAINTSIMCONFIG"].getSmallPage=function(self,pgNo,fmsID)
 			"                        ",
 			lineD,
 			"                        ",
-			lineE,
+			"                        ",
 			"                        ",
 			"                        "
 		}
