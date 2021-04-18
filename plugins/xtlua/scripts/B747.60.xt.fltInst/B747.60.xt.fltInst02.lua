@@ -417,7 +417,9 @@ B747DR_loc_ptr_vis_fo                           = deferred_dataref("laminar/B747
 B747DR_loc_scale_vis_fo                         = deferred_dataref("laminar/B747/localizer_scale/visibility_flag_fo", "number")
 B747DR_glideslope_ptr_vis_fo                    = deferred_dataref("laminar/B747/glideslope_ptr/visibility_flag_fo", "number")
 
-
+--crazytimtimtim
+B747DR_v1_alert                                 = deferred_dataref("laminar/B747/alerts/v1", "number")
+B747DR_appDH_alert                              = deferred_dataref("laminar/B747/alerts/appDH", "number")
 
 
 --*************************************************************************************--
@@ -2173,9 +2175,15 @@ function B747_decision_height_capt()
             B747_DH_alert_mode = 0
         end
     end
+	
+    -- APPROACHING MINIMUMS ALERT (crazytimtimtim)
+    if simDR_radio_alt_height_capt <= simDR_radio_alt_DH_capt + 80 and simDR_radio_alt_height_capt > simDR_radio_alt_DH_capt then
+        B747DR_appDH_alert = 1
+    else
+        B747DR_appDH_alert = 0
+    end
 
 end
-
 
 
 
@@ -2624,7 +2632,12 @@ function B747_setV1VrV2()
 
 end
 
-
+-- NEW V1 ALERT (crazytimtimtim)
+if simDR_ind_airspeed_kts_pilot >= B747DR_airspeed_V1 and B747_flt_mode == 1 then
+    B747DR_v1_alert = 1
+else
+    B747DR_v1_alert = 0
+end
 
 
 
