@@ -39,12 +39,17 @@ fmsPages["TAKEOFF"].getPage=function(self,pgNo,fmsID)--dynamic pages need to be 
 	end
 	--Marauder28
 
-  if B747DR_airspeed_V1<998 then
-    v1=B747DR_airspeed_V1
-    vr=B747DR_airspeed_Vr
-    v2=B747DR_airspeed_V2
-  
-      return{
+  if B747DR_airspeed_V1 <998 and B747DR_airspeed_V1 >0 then
+    v1 = B747DR_airspeed_V1
+    vr = B747DR_airspeed_Vr
+    v2 = B747DR_airspeed_V2
+  else
+    v1 = "---"
+    vr = "---"
+    v2 = "---"
+  end
+	
+  return{
 
   "      TAKEOFF REF       ",
   "                        ",
@@ -60,24 +65,6 @@ fmsPages["TAKEOFF"].getPage=function(self,pgNo,fmsID)--dynamic pages need to be 
   "-----------------       ",
   "<INDEX         POS INIT>"
       }
-  else
-    return{
-
-  "      TAKEOFF REF       ",
-  "                        ",
-  flaps..string.format("                   ---"),
-  "                        ",
-  string.format("                     ---"),
-  "                        ",
-  string.format("FLAPS *  CLB *       ---"),
-  "                        ",
-  "                     "..cg_lineLg,
-  "                        ",
-  "            RW***       ", 
-  "-----------------       ",
-  "<INDEX         POS INIT>"}
-    end
-  
 end
 
 fmsPages["TAKEOFF"].getSmallPage=function(self,pgNo,fmsID)
