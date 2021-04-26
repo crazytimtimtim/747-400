@@ -39,15 +39,25 @@ fmsPages["TAKEOFF"].getPage=function(self,pgNo,fmsID)--dynamic pages need to be 
 	end
 	--Marauder28
 
-  if B747DR_airspeed_V1 <998 and B747DR_airspeed_V1 >0 then
+  if B747DR_airspeed_V1 < 998 and B747DR_airspeed_V1 > 0 then
     v1 = B747DR_airspeed_V1
-    vr = B747DR_airspeed_Vr
     v2 = B747DR_airspeed_V2
   else
     v1 = "---"
-    vr = "---"
     v2 = "---"
   end
+	
+if B747DR_airspeed_Vr > 0 then
+   vr = B747DR_airspeed_Vr
+else
+   vr = "---"
+end
+
+if B747DR_airspeed_V2 > 0 then
+   v2 = B747DR_airspeed_V2
+else
+   v2 = "---"
+end
 	
   return{
 
