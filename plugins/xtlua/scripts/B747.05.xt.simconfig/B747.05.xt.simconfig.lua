@@ -239,4 +239,6 @@ function after_physics()
 	--Thrust Ref Setting
 	check_thrust_ref()
 
+	--Engine Type
+	checkEngineType()
 end
