@@ -1029,6 +1029,10 @@ function fmsFunctions.setdata(fmsO,value)
 		setFMSData("irsLat",defaultFMSData().irsLat)
 		setFMSData("irsLon",defaultFMSData().irsLon)		
 	end
+		
+	if fmsO["scratchpad"] == nil then
+		fmsO["scratchpad"] = fmsModules["data"]["airportpos"]
+	end
 
   elseif value=="flttime" then 
     hhV=string.sub(fmsO["scratchpad"],1,2)
@@ -2102,7 +2106,16 @@ function fmsFunctions.setDref(fmsO,value)
   if value == "seatBeltOption" then B747DR_SNDoptions[1] = 1 - B747DR_SNDoptions[1] return end
   if value == "paOption" then B747DR_SNDoptions[2] = 1 - B747DR_SNDoptions[2] return end
   if value == "musicOption" then B747DR_SNDoptions[3] = 1 - B747DR_SNDoptions[3] return end
--- end sound options
+
+  if value == "eicas_eng" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_stat" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_avitab" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_fuel" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_gear" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_elec" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_ecs" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_hyd" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  if value == "eicas_drs" then --[[B747DR_dsp_synoptic_display == smth]] return end
 	
   if value=="TO" then toderate=0 clbderate=0 return  end
   if value=="TO1" then toderate=1 clbderate=1 return  end
