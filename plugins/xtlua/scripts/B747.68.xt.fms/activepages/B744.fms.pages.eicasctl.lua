@@ -34,7 +34,7 @@ fmsFunctionsDefs["EICASMODES"]["L2"]={"setDref","eicas_stat"}
 fmsFunctionsDefs["EICASMODES"]["L3"]={"setDref","eicas_avitab"}
 fmsFunctionsDefs["EICASMODES"]["L5"]={"doCMD","laminar/B747/dsp/canc_switch"}
 fmsFunctionsDefs["EICASMODES"]["R1"]={"setDref","eicas_fuel"}
-fmsFunctionsDefs["EICASMODES"]["R2"]={"setDref","eicas_gear}
+fmsFunctionsDefs["EICASMODES"]["R2"]={"setDref","eicas_gear"}
 fmsFunctionsDefs["EICASMODES"]["R5"]={"doCMD","laminar/B747/dsp/rcl_switch"}
 fmsFunctionsDefs["EICASMODES"]["R6"]={"setpage","EICASSYN"}
 
