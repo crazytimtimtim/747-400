@@ -256,6 +256,8 @@ simDR_payload_weight		= find_dataref("sim/flightmodel/weight/m_fixed")
 simDR_fuel_totalizer_kg		= find_dataref("sim/cockpit2/fuel/fuel_totalizer_init_kg")
 --Marauder28
 
+B747DR_dsp_synoptic_display                     = find_dataref("laminar/B747/dsp/synoptic_display", "number")
+
 --*************************************************************************************--
 --** 				        CREATE READ-WRITE CUSTOM DATAREFS                        **--
 --*************************************************************************************--
