@@ -47,6 +47,9 @@ Feel free to join the conversation, fork this repository, and make the plane you
 
 Head to the FMC MENU > ACMS > MAINT > SIMCONFIG. Here you can find many settings for the aircraft, including sound options.
 
+**Will there be an EFB?**
+There may be one in the future, but not anytime soon. Getting systems right and fixing the bugs is a higher priority right now, and there are some texture limitations preventing us from implementing this too. You can, however, access Avitab on the lower EICAS from the EICAS control page on the FMC. 
+
 
 ### Installation
 Just extract the zip to your aircraft folder, with some caveats:
