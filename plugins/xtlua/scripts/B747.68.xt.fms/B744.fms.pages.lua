@@ -2107,15 +2107,28 @@ function fmsFunctions.setDref(fmsO,value)
   if value == "paOption" then B747DR_SNDoptions[2] = 1 - B747DR_SNDoptions[2] return end
   if value == "musicOption" then B747DR_SNDoptions[3] = 1 - B747DR_SNDoptions[3] return end
 
-  if value == "eicas_eng" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_stat" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_avitab" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_fuel" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_gear" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_elec" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_ecs" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_hyd" then --[[B747DR_dsp_synoptic_display == smth]] return end
-  if value == "eicas_drs" then --[[B747DR_dsp_synoptic_display == smth]] return end
+  -- EICAS control FMC page
+  if value == "eicas_eng" then if B747DR_dsp_synoptic_display == 1 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 1 end return end
+  if value == "eicas_elec" then if B747DR_dsp_synoptic_display == 3 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 3 end return end
+  if value == "eicas_fuel" then if B747DR_dsp_synoptic_display == 4 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 4 end return end
+  if value == "eicas_ecs" then if B747DR_dsp_synoptic_display == 5 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 5 end return end
+  if value == "eicas_hyd" then if B747DR_dsp_synoptic_display == 6 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 6 end return end
+  if value == "eicas_drs" then if B747DR_dsp_synoptic_display == 7 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 7 end return end
+  if value == "eicas_gear" then if B747DR_dsp_synoptic_display == 8 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 8 end return end
+  if value == "eicas_avitab" then if B747DR_dsp_synoptic_display == 9 then B747DR_dsp_synoptic_display = 0 else B747DR_dsp_synoptic_display = 9 end return end
+  if value == "eicas_stat" then 
+     if B747DR_dsp_synoptic_display == 2 then
+        if B747DR_STAT_msg_page == B747DR_STAT_num_msg_pages then
+           B747DR_dsp_synoptic_display = 0
+        else
+           B747DR_STAT_msg_page = B747DR_STAT_msg_page + 1
+        end
+     else
+        B747DR_dsp_synoptic_display = 2
+        B747DR_STAT_msg_page = 1
+     end
+     return
+  end	
 	
   if value=="TO" then toderate=0 clbderate=0 return  end
   if value=="TO1" then toderate=1 clbderate=1 return  end
