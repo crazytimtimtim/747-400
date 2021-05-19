@@ -12,7 +12,7 @@ lowEICASbrit				= find_dataref("sim/cockpit2/electrical/instrument_brightness_ra
 
 function avitabShow()
  	
-	if lowEICASpage == 6 then
+	if lowEICASpage == 9 then
 		avitabEnable = 1
 		avitabBrit = lowEICASbrit[10]
 	elseif avitabEnable == 1 then
