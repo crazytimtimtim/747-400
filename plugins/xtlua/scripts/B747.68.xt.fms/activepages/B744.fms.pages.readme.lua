@@ -22,11 +22,11 @@ fmsPages["README"].getPage=function(self,pgNo,fmsID)
     
     fmsFunctionsDefs["README"]["L4"]={"setDref","readmePIN"}
   
-    if B747DR_readMe_read == 1 then -- unlocked
+    if B747DR_readme_read == 1 then -- unlocked
     fmsFunctionsDefs["README"]["L6"]={"setpage","INDEX"}
     lineA = "CORRECT!"
     lineB = "<RETURN"
-    elseif B747DR_readMe_read == 2 -- failed
+    elseif B747DR_readme_read == 2 -- failed
     fmsFunctionsDefs["README"]["L6"]=nil
     lineA = "INVALID PIN"
     lineB = ""
