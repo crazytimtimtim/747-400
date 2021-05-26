@@ -2113,6 +2113,16 @@ function fmsFunctions.setDref(fmsO,value)
   if value == "musicOption" then B747DR_SNDoptions[3] = 1 - B747DR_SNDoptions[3] return end
 -- end sound options
 	
+  if value == readmePIN then
+    if fmsO["scratchpad"] == "3099" then
+      B747DR_readme_read = 1
+      fmsO["scratchpad"] = ""
+    else
+      B747DR_readme_read = 2
+      fmsO["notify"] = "INVALID ENTRY"
+    end
+  end
+	
   if value=="TO" then toderate=0 clbderate=0 return  end
   if value=="TO1" then toderate=1 clbderate=1 return  end
   if value=="TO2" then toderate=2 clbderate=2 return  end
