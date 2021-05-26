@@ -1,5 +1,9 @@
 fmsPages["README"]=createPage("README")
-fmsPages["README"].getPage=function(self,pgNo,fmsID)  
+fmsPages["README"].getPage=function(self,pgNo,fmsID)
+    
+    local lineA = ""
+    local lineB = ""
+    
     return {
       "    Read The Readme!    ",
       "                        ",
