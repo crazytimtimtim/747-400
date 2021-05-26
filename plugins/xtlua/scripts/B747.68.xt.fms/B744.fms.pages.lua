@@ -2118,7 +2118,7 @@ function fmsFunctions.setDref(fmsO,value)
       B747DR_readme_read = 1
       fmsO["notify"] = "CORRECT"
     else
-      B747DR_readme_read = 2
+      B747DR_readme_read = 0
       fmsO["notify"] = "INCORRECT"
     end
   end
