@@ -72,14 +72,22 @@ fmsPages["INDEX"].getSmallPage=function(self,pgNo,fmsID)
       "                        ",
       }
 end
-fmsFunctionsDefs["INDEX"]={}
-fmsFunctionsDefs["INDEX"]["L1"]={"setpage","IDENT"}
 
-fmsFunctionsDefs["INDEX"]["L5"]={"setpage","ACMS"}
-fmsFunctionsDefs["INDEX"]["L6"]={"setpage","CMC"}
-fmsFunctionsDefs["INDEX"]["R1"]={"setpage","EFISCTL152"}
-fmsFunctionsDefs["INDEX"]["R2"]={"setpage","EICASMODES"}
-fmsFunctionsDefs["INDEX"]["R4"]={"setpage","GNDHNDL"}
+if B747DR_readme_read == 1 then
+    fmsFunctionsDefs["INDEX"]["L1"]={"setpage","IDENT"}
+    fmsFunctionsDefs["INDEX"]["L5"]={"setpage","ACMS"}
+    fmsFunctionsDefs["INDEX"]["L6"]={"setpage","CMC"}
+    fmsFunctionsDefs["INDEX"]["R1"]={"setpage","EFISCTL152"}
+    fmsFunctionsDefs["INDEX"]["R2"]={"setpage","EICASMODES"}
+    fmsFunctionsDefs["INDEX"]["R4"]={"setpage","GNDHNDL"}
+else
+    fmsFunctionsDefs["INDEX"]["L1"]={"setpage","README"}
+    fmsFunctionsDefs["INDEX"]["L5"]={"setpage","README"}
+    fmsFunctionsDefs["INDEX"]["L6"]={"setpage","README"}
+    fmsFunctionsDefs["INDEX"]["R1"]={"setpage","README"}
+    fmsFunctionsDefs["INDEX"]["R2"]={"setpage","README"}
+    fmsFunctionsDefs["INDEX"]["R4"]={"setpage","README"}
+end
 
 fmsPages["RTE1"]=createPage("RTE1")
 fmsPages["RTE1"].getPage=function(self,pgNo,fmsID)
@@ -228,6 +236,7 @@ dofile("activepages/B744.fms.pages.pax-cargo.lua")
 dofile("activepages/B744.fms.pages.efisctl.lua")
 dofile("activepages/B744.fms.pages.eicasctl.lua")
 dofile("activepages/B744.fms.pages.doors.lua")
+dofile("activepages/B744.fms.pages.readme.lua")
 --[[
 dofile("B744.fms.pages.actclb.lua")
 dofile("B744.fms.pages.actcrz.lua")
