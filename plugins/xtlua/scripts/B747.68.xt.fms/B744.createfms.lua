@@ -34,6 +34,9 @@ end
 function keyDown(fmsModule,key)
   run_after_time(switchCustomMode, 0.5)
   print(fmsModule.. " do " .. key)
+  
+ if B747DR_readme_read == 1 then
+		
   if key=="index" then
       fmsModules[fmsModule].targetCustomFMC=true
       fmsModules[fmsModule].targetPage="INITREF"
@@ -112,7 +115,8 @@ function keyDown(fmsModule,key)
       fmsModules[fmsModule].targetpgNo=1
       return
   end
-
+ end
+	
   if not fmsModules[fmsModule].targetCustomFMC then
     if simCMD_FMS_key[fmsModule][key]~=nil then
       simCMD_FMS_key[fmsModule][key]:once()
