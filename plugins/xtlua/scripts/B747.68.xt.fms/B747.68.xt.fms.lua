@@ -304,6 +304,7 @@ B747DR_elevator_trim				    = deferred_dataref("laminar/B747/fmc/elevator_trim",
 
 --Sound Options (crazytimtimtim + Matt726)
 B747DR_SNDoptions			        	= deferred_dataref("laminar/B747/fmod/options", "array[4]")
+B747DR_readme_read                                      = deferred_dataref("laminar/B747/readme/read", "number")
 
 --Simulator Config Options
 simConfigData = {}
