@@ -5,12 +5,12 @@ fmsPages["README"].getPage=function(self,pgNo,fmsID)
     local lineA = ""
     
     return {
-      "    Read The Readme!    ",
+      "    Read The Readme     ",
       "                        ",
       "THANKS FOR DOWNLOADING  ",
-      "THE SPARKY744! TO UNLOCK",
+      "THE SPARKY744. TO UNLOCK",
       "FMC, PLEASE ENTER PIN   ",
-      "FOUND IN THE README!    ",
+      "FOUND IN THE README.    ",
       "
       "PIN:                    ",
       "----                    ",
