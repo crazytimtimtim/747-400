@@ -20,7 +20,7 @@ fmsPages["README"].getPage=function(self,pgNo,fmsID)
       lineB
     }
     
-    fmsFunctionsDefs["README"]["L3"]={"setDref","readmePIN"}
+    fmsFunctionsDefs["README"]["L4"]={"setDref","readmePIN"}
   
     if B747DR_readMe_read == 1 then -- unlocked
     fmsFunctionsDefs["README"]["L6"]={"setpage","INDEX"}
