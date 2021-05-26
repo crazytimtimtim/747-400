@@ -9,17 +9,17 @@ fmsPages["README"].getPage=function(self,pgNo,fmsID)
       "FOUND IN THE README!    ",
       "
       "PIN:                    ",
-      "____                    ",
+      "----                    ",
       "                        ",
       "      "..lineA,
-      "                        ",
+      "------------------------",
       lineB
     }
     
     fmsFunctionsDefs["README"]["L3"]={"setDref","readmePIN"}
   
     if B747DR_readMe_read == 1 then -- unlocked
-    fmsFunctionsDefs["README"]["L6"]={"setpage","MENU"}
+    fmsFunctionsDefs["README"]["L6"]={"setpage","INDEX"}
     lineA = "CORRECT!"
     lineB = "<RETURN"
     elseif B747DR_readMe_read == 2 -- failed
