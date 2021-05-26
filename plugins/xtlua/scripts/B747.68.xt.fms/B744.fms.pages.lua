@@ -2116,10 +2116,10 @@ function fmsFunctions.setDref(fmsO,value)
   if value == readmePIN then
     if fmsO["scratchpad"] == "3099" then
       B747DR_readme_read = 1
-      fmsO["scratchpad"] = ""
+      fmsO["notify"] = "CORRECT"
     else
       B747DR_readme_read = 2
-      fmsO["notify"] = "INVALID ENTRY"
+      fmsO["notify"] = "INCORRECT"
     end
   end
 	
