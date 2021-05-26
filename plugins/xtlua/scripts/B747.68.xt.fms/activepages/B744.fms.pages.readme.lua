@@ -1,8 +1,8 @@
 fmsPages["README"]=createPage("README")
 fmsPages["README"].getPage=function(self,pgNo,fmsID)
-    
+  if pgNO == 1 then
+        
     local lineA = ""
-    local lineB = ""
     
     return {
       "    Read The Readme!    ",
@@ -15,24 +15,23 @@ fmsPages["README"].getPage=function(self,pgNo,fmsID)
       "PIN:                    ",
       "----                    ",
       "                        ",
-      "      "..lineA,
+      "                        "
       "------------------------",
-      lineB
+      lineA
     }
     
     fmsFunctionsDefs["README"]["L4"]={"setDref","readmePIN"}
   
-    if B747DR_readme_read == 1 then -- unlocked
+    if B747DR_readme_read == 1 then                          -- unlocked
     fmsFunctionsDefs["README"]["L6"]={"setpage","INDEX"}
-    lineA = "CORRECT!"
-    lineB = "<RETURN"
-    elseif B747DR_readme_read == 2 -- failed
-    fmsFunctionsDefs["README"]["L6"]=nil
-    lineA = "INVALID PIN"
-    lineB = ""
-    else -- not entered
+    lineA = "<RETURN"
+    else                                                     -- failed/not entered
     fmsFunctionsDefs["README"]["L6"]=nil
     lineA = ""
-    lineB = ""
     end
+  end
+end
+
+fmsPages["README"].getNumPages=function(self)
+  return 1
 end
