@@ -106,6 +106,7 @@ B747DR_elevator_trim				    = deferred_dataref("laminar/B747/fmc/elevator_trim",
 
 --Sound Options (crazytimtimtim + Matt726)
 B747DR_SNDoptions			        	= deferred_dataref("laminar/B747/fmod/options", "array[4]")
+B747DR_readme_read                                      = deferred_dataref("laminar/B747/readme/read", "number")
 
 function createFMSCommands(fmsO,cduid,fmsid,keyid,fmskeyid)
 B747CMD_fms1_ls_key_L1              = XLuaCreateCommand("laminar/B747/".. fmskeyid .. "/ls_key/L1", fmsO.." Line Select Key 1-Left")
