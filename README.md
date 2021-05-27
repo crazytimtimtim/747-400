@@ -81,7 +81,7 @@ Additionally, the break lever and X-Plane breaks are now seperated, there is a n
 
 **Why are my screens half black?** IRS alignment cannot complete until you set the IRS position in the FMC. (INIT REF -> POS -> R4 to copy GPS position, R5 to enter it into current position.
 
-Thanks for reading the Readme! The FMC PIN is 3099.
+Thanks for reading the Readme! The P I N is 3099.
 
 ### Changelog:
 See the [commit history](https://github.com/mSparks43/747-400/commits/master) for detailed changes.
