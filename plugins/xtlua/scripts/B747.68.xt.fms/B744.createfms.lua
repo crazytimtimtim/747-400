@@ -115,6 +115,69 @@ function keyDown(fmsModule,key)
       fmsModules[fmsModule].targetpgNo=1
       return
   end
+ 
+ else
+      if key=="index" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="fpln" then --RTE
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="clb" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="crz" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="des" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="dir_intc" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="legs" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="dep_arr" then
+      fmsModules[fmsModule].targetCustomFMC=false
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="hold" then --FMC COMM
+      fmsModules[fmsModule].targetCustomFMC=true 
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="fix" then --menu
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="navrad" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  elseif key=="prog" then
+      fmsModules[fmsModule].targetCustomFMC=true
+      fmsModules[fmsModule].targetPage="README"
+      fmsModules[fmsModule].targetpgNo=1
+      return
+  end
  end
 	
   if not fmsModules[fmsModule].targetCustomFMC then
