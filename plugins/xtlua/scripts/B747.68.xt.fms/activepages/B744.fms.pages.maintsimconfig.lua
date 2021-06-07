@@ -334,3 +334,8 @@ fmsPages["MAINTSIMCONFIG"].getNumPages=function(self)
   return 4
 end
 fmsFunctionsDefs["MAINTSIMCONFIG"]["L6"]={"setpage","MAINT"}
+
+
+fmsPages["VOLUME"]=createPage("VOLUME")
+fmsPages["VOLUME"].getPage=function(self,pgNo,fmsID)
+	
