@@ -92,7 +92,7 @@ B747_CASwarningMsg   = {
     {DRindex = 17, name = "FIRE MN DK MID", status = 0},
     {DRindex = 18, name = "FIRE MN DK AFT", status = 0},
     {DRindex = 19, name = ">FIRE TEST FAIL", status = 0},
-    {DRindex = 20, name = ">FIRE TEST PASS", status = 0},
+    {DRindex = 20, name = ">FIRE TEST PASS", status = 0},	-- will do
     {DRindex = 21, name = "FIRE WHEEL WELL", status = 0},
     {DRindex = 22, name = ">OVERSPEED", status = 0},            --
     {DRindex = 23, name = ">PILOT RESPONSE", status = 0},
@@ -141,13 +141,13 @@ B747_CAScautionMsg   = {
     {DRindex = 35, name = "FUEL PRESS ENG 4", status = 0},
     {DRindex = 36, name = "FUEL QTY LOW", status = 0},          --
     {DRindex = 37, name = "FUEL STAB XFR", status = 0},
-    {DRindex = 38, name = "GEAR DISAGREE", status = 0},
+    {DRindex = 38, name = "GEAR DISAGREE", status = 0},		-- will do
     {DRindex = 39, name = "GEAR TILT", status = 0},
     {DRindex = 40, name = "HYD PRESS SYS 1", status = 0},       --
     {DRindex = 41, name = "HYD PRESS SYS 2", status = 0},       --
     {DRindex = 42, name = "HYD PRESS SYS 3", status = 0},       --
     {DRindex = 43, name = "HYD PRESS SYS 4", status = 0},       --
-    {DRindex = 44, name = "IAS DISAGREE", status = 0},
+    {DRindex = 44, name = "IAS DISAGREE", status = 0},		-- will do
     {DRindex = 45, name = ">ICING", status = 0},                --
     {DRindex = 46, name = ">ICING NAC", status = 0},
     {DRindex = 47, name = "ILS ANTENNA", status = 0},
@@ -190,7 +190,7 @@ B747_CASadvisoryMsg   = {
     {DRindex = 14, name = "APU DOOR", status = 0},              --
     {DRindex = 15, name = "APU FUEL", status = 0},              --
     {DRindex = 16, name = ">APU GEN 1", status = 0},
-    {DRindex = 17, name = "AUTOBRAKES", status = 0},
+    {DRindex = 17, name = "AUTOBRAKES", status = 0},		-- already done, need to update
     {DRindex = 18, name = ">BARO DISAGREE", status = 0},        --
     {DRindex = 19, name = ">BAT DISCH APU", status = 0},
     {DRindex = 20, name = ">BAT DISCH MAIN", status = 0},
@@ -231,7 +231,7 @@ B747_CASadvisoryMsg   = {
     {DRindex = 55, name = ">DATALINK AVAIL", status = 0},
     {DRindex = 56, name = ">DATALINK LOST", status = 0},
     {DRindex = 57, name = ">DATALINK SYS", status = 0},
-    {DRindex = 58, name = ">DET FIRE APU", status = 0},
+    {DRindex = 58, name = ">DET FIRE APU", status = 0},		-- might be able to do fire/ovhts
     {DRindex = 59, name = ">DET FIRE/OHT 1", status = 0},
     {DRindex = 60, name = ">DET FIRE/OHT 2", status = 0},
     {DRindex = 61, name = ">DET FIRE/OHT 3", status = 0},
@@ -324,7 +324,7 @@ B747_CASadvisoryMsg   = {
     {DRindex = 148, name = "FUEL IMBALANCE", status = 0},       --
     {DRindex = 149, name = "FUEL IMBAL 1-4", status = 0},       --
     {DRindex = 150, name = "FUEL IMBAL 2-3", status = 0},       --
-    {DRindex = 151, name = ">FUEL JETT A", status = 0},
+    {DRindex = 151, name = ">FUEL JETT A", status = 0},		-- might do fuel jetts
     {DRindex = 152, name = ">FUEL JETT B", status = 0},
     {DRindex = 153, name = "FUEL OVRD CTR L", status = 0},      --
     {DRindex = 154, name = "FUEL OVRD CTR R", status = 0},      --
@@ -348,7 +348,7 @@ B747_CASadvisoryMsg   = {
     {DRindex = 172, name = ">FUEL TEMP LOW", status = 0},       --
     {DRindex = 173, name = "FUEL TEMP SYS", status = 0},
     {DRindex = 174, name = ">FUEL WING ISOL", status = 0},
-    {DRindex = 175, name = "FUEL X FEED 1", status = 0},
+    {DRindex = 175, name = "FUEL X FEED 1", status = 0},	-- I think thee are done
     {DRindex = 176, name = "FUEL X FEED 2", status = 0},
     {DRindex = 177, name = "FUEL X FEED 3", status = 0},
     {DRindex = 178, name = "FUEL X FEED 4", status = 0},
@@ -367,7 +367,7 @@ B747_CASadvisoryMsg   = {
     {DRindex = 191, name = "HEAT P/S R AUX", status = 0},
     {DRindex = 192, name = "HEAT R AOA", status = 0},           --
     {DRindex = 193, name = "HEAT R TAT", status = 0},
-    {DRindex = 194, name = "HEAT WINDOW L", status = 0},
+    {DRindex = 194, name = "HEAT WINDOW L", status = 0},	-- might be able to do
     {DRindex = 195, name = "HEAT WINDOW R", status = 0},
     {DRindex = 196, name = ">HUMID DOOR 5", status = 0},
     {DRindex = 197, name = ">HUMID FLT DK", status = 0},
@@ -524,7 +524,7 @@ B747_CASmemoMsg   = {
     {DRindex = 42, name = "PRINTER MESSAGE", status = 0},
     {DRindex = 43, name = "ACARS ALERT", status = 0},
     {DRindex = 44, name = "ACARS VOICE BUSY", status = 0},
-    {DRindex = 45, name = "SPEEDBRAKE ARMED", status = 0},
+    {DRindex = 45, name = "SPEEDBRAKE ARMED", status = 0},	-- can do
 }
 
 
