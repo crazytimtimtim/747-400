@@ -11,13 +11,20 @@ B747DR_text_capt_show 				= find_dataref("laminar/B747/nd/capt/text/show")
 B747DR_text_capt_heading			= find_dataref("laminar/B747/nd/capt/text/heading")
 B747DR_text_capt_distance			= find_dataref("laminar/B747/nd/capt/text/distance")
 --B747DR_text_capt_icon				= find_dataref("laminar/B747/nd/capt/text/icon","array[60]")
-
+B747DR_nd_mode_capt_sel_dial_pos                = find_dataref("laminar/B747/nd/mode/capt/sel_dial_pos", "number")
+B747DR_nd_mode_fo_sel_dial_pos                  = find_dataref("laminar/B747/nd/mode/fo/sel_dial_pos", "number")
 B747DR_text_fo_show 				= find_dataref("laminar/B747/nd/fo/text/show")
 B747DR_text_fo_heading			= find_dataref("laminar/B747/nd/fo/text/heading")
 B747DR_text_fo_distance			= find_dataref("laminar/B747/nd/fo/text/distance")
 --B747DR_text_fo_icon				= find_dataref("laminar/B747/nd/fo/text/icon","array[60]")
 B747DR_fmscurrentIndex      = find_dataref("laminar/B747/autopilot/ap_monitor/fmscurrentIndex")
-
+B747BR_totalDistance 			= find_dataref("laminar/B747/autopilot/dist/remaining_distance")
+B747BR_eod_index 			= find_dataref("laminar/B747/autopilot/dist/eod_index", "number")
+B747BR_nextDistanceInFeet 		= find_dataref("laminar/B747/autopilot/dist/next_distance_feet")
+B747BR_cruiseAlt 			= find_dataref("laminar/B747/autopilot/dist/cruise_alt")
+B747BR_tod				= find_dataref("laminar/B747/autopilot/dist/top_of_descent")
+B747BR_todLat				= find_dataref("laminar/B747/autopilot/dist/top_of_descent_lat", "number")
+B747BR_todLong				= find_dataref("laminar/B747/autopilot/dist/top_of_descent_long", "number")
 iconTextDataCapt={}
 iconTextDataCapt.icons=find_dataref("laminar/B747/nd/capt/text/icon")
 for n=0,59,1 do
@@ -62,6 +69,15 @@ B747DR_pfd_mode_capt		 = find_dataref("laminar/B747/pfd/capt/irs")
 B747DR_pfd_mode_fo		 = find_dataref("laminar/B747/pfd/fo/irs")
 B747DR_nd_capt_tfc	                        = find_dataref("laminar/B747/nd/capt/tfc")
 B747DR_nd_fo_tfc	                        = find_dataref("laminar/B747/nd/fo/tfc")
+
+simDR_groundspeed			                      = find_dataref("sim/flightmodel2/position/groundspeed")
+simDR_vvi_fpm_pilot        	                = find_dataref("sim/cockpit2/gauges/indicators/vvi_fpm_pilot")
+simDR_autopilot_altitude_ft    		          = find_dataref("sim/cockpit2/autopilot/altitude_dial_ft") -- alternate might better MCP which is B747DR_autopilot_altitude_ft
+simDR_pressureAlt1	                        = find_dataref("sim/cockpit2/gauges/indicators/altitude_ft_pilot")
+B747DR_nd_alt_distance                  		= find_dataref("laminar/B747/nd/toc/distance")
+B747DR_nd_alt_fo_active			                = find_dataref("laminar/B747/nd/toc/fo_active")
+B747DR_nd_alt_capt_active			              = find_dataref("laminar/B747/nd/toc/capt_active")
+
 local captIRS=0
 local foIRS=0
 local ranges = {10, 20, 40, 80, 160, 320, 640}
@@ -202,6 +218,12 @@ function makeIcon(iconTextData,navtype,text,latitude,longitude,distance)
     iconTextData[lastNavaid].whitetext=" "
     iconTextData[lastNavaid].redtext=" "
     iconTextData[lastNavaid].greentext=" " 
+  elseif (navtype==3008) then --TOD
+    iconTextData.icons[lastNavaid]=8
+    iconTextData[lastNavaid].bluetext=" "
+    iconTextData[lastNavaid].whitetext=" " 
+    iconTextData[lastNavaid].redtext=" "
+    iconTextData[lastNavaid].greentext=text 
   elseif bit_and(navtype,4)>0 and vor_ndb>0 then
     iconTextData.icons[lastNavaid]=11
     if text==simDR_radio_nav03_ID or text==simDR_radio_nav04_ID then
@@ -315,6 +337,20 @@ function newIcons()
       end
     end
   end
+  --TODs
+  if B747BR_cruiseAlt>0 and B747BR_totalDistance-B747BR_tod>-3 then
+    local toddist=getDistance(simDR_latitude,simDR_longitude,B747BR_todLat,B747BR_todLong)
+    if B747DR_nd_mode_capt_sel_dial_pos==2 then
+      if toddist < ranges[simDR_range_dial_capt + 1] then 
+        makeIcon(iconTextDataCapt,3008,"T/D",B747BR_todLat,B747BR_todLong,toddist)
+      end
+    end
+    if B747DR_nd_mode_fo_sel_dial_pos==2 then
+      if toddist < ranges[simDR_range_dial_fo + 1] then 
+        makeIcon(iconTextDataFO,3008,"T/D",B747BR_todLat,B747BR_todLong,toddist)
+      end
+    end
+  end
   --TCAS
   for n=1,64,1 do
     local distance = getDistance(simDR_latitude,simDR_longitude,simDR_tcas_lat[n],simDR_tcas_lon[n])
@@ -421,14 +457,43 @@ function read_fixes()
     lastUpdateFixes=simDRTime
   end
 end
+function compute_and_show_alt_range_arc()
+  local meters_per_second_to_kts = 1.94384449
+  local actual_speed = simDR_groundspeed * meters_per_second_to_kts
+  if simDR_autopilot_altitude_ft>simDR_pressureAlt1 and simDR_vvi_fpm_pilot>150 then
+    altDiff=simDR_autopilot_altitude_ft-simDR_pressureAlt1
+    minsToAlt=altDiff/simDR_vvi_fpm_pilot
+    distanceToAlt=(actual_speed*minsToAlt)/60
+    --print("distanceToAlt="..distanceToAlt.." minsToAlt="..minsToAlt.." altDiff="..altDiff.." actual_speed="..actual_speed)
+    if distanceToAlt < ranges[simDR_range_dial_capt + 1] then
+      B747DR_nd_alt_distance=distanceToAlt*(640/ranges[simDR_range_dial_capt + 1])
+    else
+      B747DR_nd_alt_distance=-99
+    end
+  else
+    B747DR_nd_alt_distance=-99
+  end
+  
 
+  if captIRS==0 or B747DR_nd_alt_distance<-90 or B747DR_nd_mode_capt_sel_dial_pos~=2 then 
+    B747DR_nd_alt_capt_active=0 
+  else
+    B747DR_nd_alt_capt_active=1
+  end
+  if foIRS==0 or B747DR_nd_alt_distance<-90 or B747DR_nd_mode_fo_sel_dial_pos~=2 then 
+    B747DR_nd_alt_fo_active=0
+  else
+    B747DR_nd_alt_fo_active=1
+   end
+end
 
 function after_physics()
   if debug_nd>0 then return end
   local diff=simDRTime-lastUpdate
   updateIcons()
+  compute_and_show_alt_range_arc()
   local diff2=simDRTime-lastUpdateIcon
-  if diff>2 then 
+  if diff>0.5 then 
     newIcons()
     lastUpdateIcon=simDRTime
   end
@@ -436,7 +501,7 @@ function after_physics()
   if diff2>10 then 
     read_fixes()
   end
-  if diff<10 then return end
+  if diff<2 then return end
   lastUpdate=simDRTime
   decodeNAVAIDS()
   decodeFlightPlan()

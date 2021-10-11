@@ -8,13 +8,10 @@ Thank you all for your support! This overhaul is now at the "experimental" versi
 
 Yes! Of course! This project is an open source project, consisting of developers gathering from all over the world wanting to create a 747.
 
-**What happened to the YesAviation 747?**
-
-The YesAviation team now goes under another name, and is developing another aircraft somewhere else. Everyone sends a big thank you to the former team, and wish them good luck in their endeavors.
 
 **What are the differences between the default 747, and the Sparky 747?**
 
-This 747 currently includes new FMOD sounds, realistic textures, new systems and FMC, three variants of engines coming soon, a new UV map for livery creators, and many more big changes in the future.
+This 747 currently includes new FMOD sounds, realistic textures, new systems and FMC, two of three engines variants are now accurately impliemented. Future changes will focus on fully simulating failures and continually focus on accurately recreating various 747-400 variants .
 The github repository contains the latest versions, including the LCF model variant by Lee_Hyeon_Seo (with permission) with the existing improvements, check out the working his [A340 developements](https://forums.x-plane.org/index.php?/forums/topic/203381-3d-cockpit-for-a340/&)
 
 Custom sounds and display textures by [Matt726](https://youtube.com/c/matt726)
@@ -49,12 +46,10 @@ Head to the FMC MENU > ACMS > MAINT > SIMCONFIG. Here you can find many settings
 
 
 ### Installation
-Just extract the zip to your aircraft folder, with some caveats:
+Just extract the zip to your aircraft folder (delete any existing copy, **don't** overwite an existing installation), with some caveats:
 
 Windows users:
-You need to manually install [C++ support](https://www.microsoft.com/en-us/download/details.aspx?id=13523) and [multithreading support](https://aka.ms/vs/16/release/vc_redist.x64.exe) in order to use this aircraft.
-
-(aka.ms is a microsoft domain - linked from https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads)
+Two executables are included in the release zip file, these are required to have been installed for the aircraft systems to function.
 
 ### Troubleshooting
 **How do I go direct to a waypoint?** flight plan manipulation is currently a "best effort" wrap around the default flightplan fms pages to get it as close to what is in the FCOM without going completely back to square oue.
@@ -69,9 +64,9 @@ You need to manually install [C++ support](https://www.microsoft.com/en-us/downl
 
  - _Once in the air_, the X-Plane LEGS page can be reached by pressing RTE, and then L6 (marked RTE 2)
 
-**What is the black console window that opens when I start the plane?** Don't close it. The console window is part of the systems monitoring and will give important information needed to report issues for example if the plane crashes to desktop. This and the X-Plane Log.txt are the two primary tools for investigating issues.
+**What is the black console window that opens when I start the plane?** Don't close it. The console window is part of the systems monitoring and will give important information needed to report issues for example if the plane crashes to desktop. This and the X-Plane Log.txt are the two primary tools for investigating issues. **This can be disabled by deleting the xtlua_debugging.txt file from the aircrafts plugins/xtlua/64/ folder.**
 
-**All my cockpit is black and I can't click anything?** Windows users: Please install the installers linked above. Also check that the plugins/xtlua/64/win.xpl extracted correctly. Some users have reported their antivirus blocking it from being extracted. Please send an angry email to your antivirus provider along with a copy of the file if you have your time wasted by this.
+**All my cockpit is black and I can't click anything?** Windows users: Please install the installers described above. Also check that the plugins/xtlua/64/win.xpl extracted correctly. Some users have reported their antivirus blocking it from being extracted. Please send an angry email to your antivirus provider along with a copy of the file if you have your time wasted by this.
 
 **Why is my FMC blank?** certain controllers have their switches automatically bound to avionics power, if these are off it turns off the avionics needed by the FMC, either switch on the switch on your controller, or bind a key to "avionics on" and use that to bring the FMC to life
 
@@ -84,7 +79,89 @@ Additionally, the brake lever and X-Plane brakes are now separated, there is a n
 ### Changelog:
 See the [commit history](https://github.com/mSparks43/747-400/commits/master) for detailed changes.
 
-To 02/11/2020:
+## Release 2:
+
+### Special Thanks
+**kudosi**:
+kudosi was extremely instrumental in providing all of the complicated engine and atmospheric formulas to calculate N1, N2, EPR, and EGT for both the GE and PW engine variants.  his tireless work to help model the engine behaviors was the key input needed to code the EEC module.  kudosi also helped with review and testing and compared XP results to real-world 747-400 flight data to ensure a realistic experience.
+
+**dyno**:
+dyno was a great help in testing the engine variants and providing feedback on technical issues and abnormal behaviors.  His efforts were greatly appreciated, especially on last-minute requests to test things prior to release.
+
+**v1rota7e**:
+v1rota7e provided valuable insight into real-world operations of a 747-400.  He gave guidance on engine and EICAS behaviors, and gave feedback during test flights on where he saw things that were both good and bad from a realism point of view.
+
+**jcomm**:
+jcomm helped considerably resolving vspeed and speed tape and other behaviours which proved difficult to resolve.
+
+**Everyone else**:
+A huge thank you to all the others who helped, tested, crashed, took her for long and short hauls and filed issues when they found things awry.
+
+**Changes 02/11/2020 - 23/09/2021:**
+
+- Reworked autopilot logic
+- New fmod sounds (Matt726-S and crazytimtimtim)
+- AutoATC integration (beta, WIP) - voice commands/ATC/ACARS/DPDLC/Flightplanning/Live METAR & TAF (full functionality requires Android application, turn off center radio to remove "ACARS NO COMM" message when not connected)
+- Updates for Terrain Radar integration (DrGluck)
+- Autothrottle improvments, speed up autothrottle to 5 seconds min to max
+- Updated approach/loc mode switching
+- Panel clipping fixes
+- xtlua bug fixes
+- ND updates - textures and icons (MCCVeen, Matt726-S)
+- Engines
+  - spool up times (assistance from kudosi)
+  - accurate by type engine performance and display (Marauder28 and kudosi)
+- Updated landing gear
+  - body gear steering
+  - increased shock absorption (reduce/prevent bouncing)
+- Spoiler fixes
+- CMC/ACMS  (Matt726-S)
+- ECS page
+- Autobrake CAS msgs (flfy)
+- Split rudder
+- transponder/tcas fixes
+- Livery specific aircraft configuration (Marauder28)
+- cockpit panel textures overhaul (Matt726-S)
+- VR specific commands for home cockpit
+- Accurate slat behaviour
+- New VR configuration file. (bigoil7 Valtime)
+- CG% & TRIM calcs (Marauder28)
+- Slip/skid indicator fixes (flfy)
+- PAX/CARGO loading (Marauder28)
+- Accurate Vspeed minimums (jcomm)
+- ILS manual/autotune logic 
+- ILS LOC/GS dots
+- Fix CDU swipe and electrical CAS
+- Main batt discharge warning
+- Antiicing fixes
+- Tank to engine logic
+- Top of descent distance calculation and icon
+- Numerous flight director behaviour fixes
+- Liveries by fscabral
+- Saudia livery (aboodilatif)
+- Made cockpit lighting more orange and other lighting fixes
+- Comm 1 and 2, and display power logic
+- Checklist (Matt726-S)
+- Door page (crazytimtimtim)
+- Cost indexing to vnav cruise (gHashFlyer)
+- Pull up and windshear on PFD (Matt726-S)
+- APU
+  - Battery
+  - Inlet door logic (Juppie902)
+  - power logic (crazytimtimtim)
+- Font updates (Matt726-S)
+- Yaw damper only on when IRU aligned (crazytimtimtim)
+- Clear takeoff flaps ref after 1000 feet
+- Sound Options (crazytimtimtim)
+- VNAV LRC page (gHashFlyer)
+- Added support for metric fuel weight displays (gHashFlyer)
+- HOLD FMA logic
+- Always deploy speedbrake when reverse thrust is applied
+- Numerous PFD and FMA fixes
+- "RF" and "LO" lower eicas warnings (crazytimtimtim)
+- Variable IRS align timing
+
+**Release 1: up to 02/11/2020:**
 
 - fuel fixes
 - font, image and texture overhaul

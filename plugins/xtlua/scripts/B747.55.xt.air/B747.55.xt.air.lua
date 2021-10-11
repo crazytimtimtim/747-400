@@ -140,8 +140,9 @@ simDR_press_diff_psi                = find_dataref("sim/cockpit2/pressurization/
 --simDR_apu_running                   = find_dataref("sim/cockpit2/electrical/APU_running")
 simDR_apu_N1_pct                    = find_dataref("sim/cockpit2/electrical/APU_N1_percent")
 simDR_engine_running                = find_dataref("sim/flightmodel/engine/ENGN_running")
-simDR_engine_N1_pct                 = find_dataref("sim/cockpit2/engine/indicators/N1_percent")
---simDR_engine_N2_pct                 = find_dataref("sim/cockpit2/engine/indicators/N2_percent")
+B747DR_display_N1				= find_dataref("laminar/B747/engines/display_N1")
+B747DR_display_N2				= find_dataref("laminar/B747/engines/display_N2")
+
 
 
 
@@ -438,16 +439,16 @@ function B747_bleed_air_supply()
     B747bleedAir.apu.psi = B747_rescale(0, 0, 80.0, rndm_max_apu_bleed_psi, simDR_apu_N1_pct)
 
     -- ENGINE 1
-    B747bleedAir.engine1.psi = B747_rescale(0, 0, 50.0, rndm_max_eng1_bleed_psi, simDR_engine_N1_pct[0])
+    B747bleedAir.engine1.psi = B747_rescale(0, 0, 50.0, rndm_max_eng1_bleed_psi, B747DR_display_N1[0])
 
     -- ENGINE 1
-    B747bleedAir.engine2.psi = B747_rescale(0, 0, 50.0, rndm_max_eng2_bleed_psi, simDR_engine_N1_pct[1])
+    B747bleedAir.engine2.psi = B747_rescale(0, 0, 50.0, rndm_max_eng2_bleed_psi, B747DR_display_N1[1])
 
     -- ENGINE 1
-    B747bleedAir.engine3.psi = B747_rescale(0, 0, 50.0, rndm_max_eng3_bleed_psi, simDR_engine_N1_pct[2])
+    B747bleedAir.engine3.psi = B747_rescale(0, 0, 50.0, rndm_max_eng3_bleed_psi, B747DR_display_N1[2])
 
     -- ENGINE 1
-    B747bleedAir.engine4.psi = B747_rescale(0, 0, 50.0, rndm_max_eng4_bleed_psi, simDR_engine_N1_pct[3])
+    B747bleedAir.engine4.psi = B747_rescale(0, 0, 50.0, rndm_max_eng4_bleed_psi, B747DR_display_N1[3])
 
 end
 
@@ -875,7 +876,7 @@ end
 ----- PRIMARY EICAS PRESSURIZATION DISPLAY -----------------------------------------------
 function B747_primary_EICAS_ECS_display()
 
-    if B747DR_dsp_synoptic_display == 1
+    if B747DR_dsp_synoptic_display == 5 or B747DR_dsp_synoptic_display == 1
         -- or CAUTION MESSAGE: BLD DUCT LEAK L  (NOT MODEELED)
         -- or CAUTION MESSAGE: BLD DUCT LEAK R  (NOT MODELED)
         or
@@ -883,10 +884,10 @@ function B747_primary_EICAS_ECS_display()
         B747DR_CAS_caution_status[10] == 1
         or
         -- ADVISORY MESSAGE: OUTFLOW VLV (L/R)
-        B747DR_button_switch_position[34] < 0.05 or B747DR_button_switch_position[35] < 0.05
+        B747DR_CAS_advisory_status[249] == 1 or B747DR_CAS_advisory_status[250] == 1
         or
         -- LANDING ALT CONTROL IS "MAN"
-        B747DR_landing_alt_button_pos < 0.5
+        B747DR_landing_alt_button_pos == 0
         or
         -- DUCT PRESSURE IS LOW
         B747_duct_pressure_L < 11 or B747_duct_pressure_R < 11
@@ -902,14 +903,17 @@ function B747_primary_EICAS_ECS_display()
     then
         B747DR_pressure_EICAS1_display_status = 1
     else
-        -- ONLY CLEAR THE ECS DATA BLOCK WHEN ADVERSE CONDITIONS NO LONGER EXIST
-        -- AND THE FLIGHT CREW HAS 'BLANKED" THE "ENG" DISPLAY
-        if B747DR_dsp_synoptic_display ~= 1 then
-            B747DR_pressure_EICAS1_display_status = 0
-        end
+        B747DR_pressure_EICAS1_display_status = 0
     end
+    if B747DR_button_switch_position[41] == 1 then
+        B747DR_CAS_memo_status[24] = 1
+    else
+        B747DR_CAS_memo_status[24] = 0
+    end
+end    -- PACKS HIGH FLOW
 
-end
+    
+
 
 
 
@@ -1042,7 +1046,14 @@ function B747_air_EICAS_msg()
         B747DR_CAS_memo_status[20] = 0 
     end
 
-    
+    -- PACKS HIGH FLOW
+
+    if B747DR_button_switch_position[41] == 1 then
+        B747DR_CAS_memo_status[24] = 1
+    else
+        B747DR_CAS_memo_status[24] = 0
+    end
+
 
     
 

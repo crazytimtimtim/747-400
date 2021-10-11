@@ -128,6 +128,16 @@ simDR_engine_throttle_jet       = find_dataref("sim/cockpit2/engine/actuators/th
 simDR_engine_throttle_jet_all   = find_dataref("sim/cockpit2/engine/actuators/throttle_jet_rev_ratio_all")
 simCMD_autopilot_autothrottle_on		= find_command("sim/autopilot/autothrottle_on")
 simCMD_autopilot_autothrottle_off		= find_command("sim/autopilot/autothrottle_off")
+simCMD_autopilot_glideslope_mode		= find_command("sim/autopilot/glide_slope")
+B747DR_ap_approach_mode     	= deferred_dataref("laminar/B747/autopilot/approach_mode", "number")
+simDR_autopilot_nav_status          	= find_dataref("sim/cockpit2/autopilot/nav_status")
+simDR_autopilot_gs_status	= find_dataref("sim/cockpit2/autopilot/glideslope_status")
+simCMD_autopilot_appr_mode					= find_command("sim/autopilot/approach")
+simDR_autopilot_TOGA_vert_status    	= find_dataref("sim/cockpit2/autopilot/TOGA_status")
+simDR_autopilot_TOGA_lat_status     	= find_dataref("sim/cockpit2/autopilot/TOGA_lateral_status")
+simCMD_autopilot_TOGA_mode          = find_command("sim/autopilot/take_off_go_around")
+simDRTime					= find_dataref("sim/time/total_running_time_sec")
+B747DR_ap_lastCommand              		= deferred_dataref("laminar/B747/autopilot/lastCommand", "number")
 simDR_hydraulic_sys_press_01    = find_dataref("sim/operation/failures/hydraulic_pressure_ratio")
 simDR_hydraulic_sys_press_02    = find_dataref("sim/operation/failures/hydraulic_pressure_ratio2")
 
@@ -135,9 +145,9 @@ simDR_engine_nacelle_heat_on    = find_dataref("sim/cockpit2/ice/ice_inlet_heat_
 simDR_engine_starter_status     = find_dataref("sim/cockpit2/engine/actuators/ignition_key")				-- CHANGE TO STARTER IS RUNNING  ??
 simDR_engine_auto_ignite_on     = find_dataref("sim/cockpit2/engine/actuators/auto_ignite_on")
 simDR_engine_igniter_on         = find_dataref("sim/cockpit2/engine/actuators/igniter_on")
-simDR_engine_N1_pct             = find_dataref("sim/cockpit2/engine/indicators/N1_percent")
-simDR_engine_N2_pct             = find_dataref("sim/cockpit2/engine/indicators/N2_percent")
-simDR_engine_epr_ratio          = find_dataref("sim/cockpit2/engine/indicators/EPR_ratio")
+B747DR_display_N1				= find_dataref("laminar/B747/engines/display_N1")
+B747DR_display_N2				= find_dataref("laminar/B747/engines/display_N2")
+
 simDR_engine_EGT_degC           = find_dataref("sim/cockpit2/engine/indicators/EGT_deg_C")
 simDR_engine_fuel_mix_ratio     = find_dataref("sim/cockpit2/engine/actuators/mixture_ratio")
 simDR_engine_oil_pressure       = find_dataref("sim/cockpit2/engine/indicators/oil_pressure_psi")
@@ -578,7 +588,20 @@ function B747_engine_TOGA_power_CMDhandler(phase, duration)
         if B747DR_toggle_switch_position[29] == 1 then
             --if simDR_allThrottle>0.25 then
 		    if simDR_all_wheels_on_ground==0 then
-		      B747DR_ap_autoland=-2
+		        B747DR_ap_autoland=-2
+                --[[if simDR_autopilot_nav_status > 0 then
+                    if simDR_autopilot_gs_status > 0 then
+                        print("simCMD_autopilot_appr_mode in TOGA POWER")
+                        simCMD_autopilot_appr_mode:once() --DEACTIVATE APP
+                    end
+                end]]
+                if simDR_autopilot_TOGA_vert_status == 0											-- TOGA VERTICAL MODE IS OFF 
+						or simDR_autopilot_TOGA_lat_status == 0											-- TOGA LATERAL MODE IS OFF 
+				then	
+                        B747DR_ap_lastCommand=simDRTime									
+						simCMD_autopilot_TOGA_mode:once()												-- ACTIVATE "TOGA" MODE
+				end	
+                
 		    end
 		    simCMD_autopilot_autothrottle_off:once()
 	            if B747DR_engine_TOGA_mode == 0 then
@@ -587,6 +610,12 @@ function B747_engine_TOGA_power_CMDhandler(phase, duration)
                 	simDR_engine_throttle_input[2] = 0.95
                 	simDR_engine_throttle_input[3] = 0.95]]
 				B747DR_engine_TOGA_mode = 0.9
+                B747DR_ap_approach_mode = 0
+                --[[if simDR_autopilot_gs_status > 0 then
+                    simCMD_autopilot_glideslope_mode:once()	-- CANX GLIDESLOPE MODE
+                    B747DR_ap_lastCommand=simDRTime
+                end]]
+                
 			end	
            -- end
         end		
@@ -648,7 +677,9 @@ B747DR_autothrottle_fail            = deferred_dataref("laminar/B747/engines/aut
 --** 				       CREATE READ-WRITE CUSTOM DATAREFS                         **--
 --*************************************************************************************--
 -- Holds all SimConfig options
+
 B747DR_simconfig_data					= deferred_dataref("laminar/B747/simconfig", "string")
+B747DR_newsimconfig_data				= deferred_dataref("laminar/B747/newsimconfig", "number")
 
 
 
@@ -764,12 +795,12 @@ function B747_prop_mode()
     --[[if ((B747DR_engine_TOGA_mode >0 and B747DR_engine_TOGA_mode < 1) or B747DR_ap_autoland<0) and simDR_allThrottle<0.94 and B747DR_toggle_switch_position[29] == 1 then
 	    simCMD_ThrottleUp:once()--simDR_allThrottle = B747_set_animation_position(simDR_allThrottle,0.95,0,1,1)
     else]]
-    if B747DR_engine_TOGA_mode >0 and B747DR_engine_TOGA_mode < 1 then
+    --[[if B747DR_engine_TOGA_mode >0 and B747DR_engine_TOGA_mode < 1 then
       B747DR_engine_TOGA_mode = 1
       --[[if toderate==0 then throttlederate=1.0
       elseif toderate==1 then throttlederate=0.9
-      elseif toderate==2 then throttlederate=0.8 end]]--
-    end
+      elseif toderate==2 then throttlederate=0.8 end
+    end]]--
     
     
     -- AIRCRAFT IS "ON THE GROUND" 
@@ -1189,10 +1220,10 @@ end
 ----- ENGINE OIL PRESSURE SECONDARY EICAS DISPLAY ---------------------------------------
 function B747_secondary_EICAS2_oil_press_status()
 
-    B747DR_engine_oil_press_psi[0] = simDR_engine_oil_pressure[0] + B747_rescale(0.0, 0.0, 100.0, B747_eng1oilPressVariance, simDR_engine_N1_pct[0])
-    B747DR_engine_oil_press_psi[1] = simDR_engine_oil_pressure[1] + B747_rescale(0.0, 0.0, 100.0, B747_eng2oilPressVariance, simDR_engine_N1_pct[1])
-    B747DR_engine_oil_press_psi[2] = simDR_engine_oil_pressure[2] + B747_rescale(0.0, 0.0, 100.0, B747_eng3oilPressVariance, simDR_engine_N1_pct[2])
-    B747DR_engine_oil_press_psi[3] = simDR_engine_oil_pressure[3] + B747_rescale(0.0, 0.0, 100.0, B747_eng4oilPressVariance, simDR_engine_N1_pct[3])
+    B747DR_engine_oil_press_psi[0] = simDR_engine_oil_pressure[0] + B747_rescale(0.0, 0.0, 100.0, B747_eng1oilPressVariance, B747DR_display_N1[0])
+    B747DR_engine_oil_press_psi[1] = simDR_engine_oil_pressure[1] + B747_rescale(0.0, 0.0, 100.0, B747_eng2oilPressVariance, B747DR_display_N1[1])
+    B747DR_engine_oil_press_psi[2] = simDR_engine_oil_pressure[2] + B747_rescale(0.0, 0.0, 100.0, B747_eng3oilPressVariance, B747DR_display_N1[2])
+    B747DR_engine_oil_press_psi[3] = simDR_engine_oil_pressure[3] + B747_rescale(0.0, 0.0, 100.0, B747_eng4oilPressVariance, B747DR_display_N1[3])
 
     for i = 0, 3 do
         
@@ -1216,10 +1247,10 @@ end
 ---- ENGINE OIL TEMPERATURE -------------------------------------------------------------
 function B747_engine_oil_temp()
 
-    B747DR_engine_oil_temp_degC[0] = simDR_engine_oil_temp[0] + B747_rescale(0.0, 0.0, 100.0, B747_eng1oilTempVariance, simDR_engine_N1_pct[0])
-    B747DR_engine_oil_temp_degC[1] = simDR_engine_oil_temp[1] + B747_rescale(0.0, 0.0, 100.0, B747_eng2oilTempVariance, simDR_engine_N1_pct[1])
-    B747DR_engine_oil_temp_degC[2] = simDR_engine_oil_temp[2] + B747_rescale(0.0, 0.0, 100.0, B747_eng3oilTempVariance, simDR_engine_N1_pct[2])
-    B747DR_engine_oil_temp_degC[3] = simDR_engine_oil_temp[3] + B747_rescale(0.0, 0.0, 100.0, B747_eng4oilTempVariance, simDR_engine_N1_pct[3])
+    B747DR_engine_oil_temp_degC[0] = simDR_engine_oil_temp[0] + B747_rescale(0.0, 0.0, 100.0, B747_eng1oilTempVariance, B747DR_display_N1[0])
+    B747DR_engine_oil_temp_degC[1] = simDR_engine_oil_temp[1] + B747_rescale(0.0, 0.0, 100.0, B747_eng2oilTempVariance, B747DR_display_N1[1])
+    B747DR_engine_oil_temp_degC[2] = simDR_engine_oil_temp[2] + B747_rescale(0.0, 0.0, 100.0, B747_eng3oilTempVariance, B747DR_display_N1[2])
+    B747DR_engine_oil_temp_degC[3] = simDR_engine_oil_temp[3] + B747_rescale(0.0, 0.0, 100.0, B747_eng4oilTempVariance, B747DR_display_N1[3])
 
 end
 
@@ -1271,9 +1302,9 @@ function B747_secondary_EICAS2_engine_vibration()
     lastWingFlex=B747_animate_value(lastWingFlex,B747DR_EICAS2_wingFlex[0],-30,30,20)
     local airspeedReduction=(400-simDR_ind_airspeed_kts_pilot)/400
     for i = 0, 3 do
-    B747DR_EICAS2_engine_vibration[i] = B747_rescale(0.0, 0.0, 100.0, B747_engine_maxVib[i], simDR_engine_N2_pct[i])
+    B747DR_EICAS2_engine_vibration[i] = B747_rescale(0.0, 0.0, 100.0, B747_engine_maxVib[i], B747DR_display_N2[i])
     timeNow=B747_engine_lastClock[i]+(os.clock()-B747_engine_lastClock[i])
-    thrust=math.max((simDR_engine_N2_pct[i]-60)/10,0)
+    thrust=math.max((B747DR_display_N2[i]-60)/10,0)
     phaseNow=(timeNow*thrust)-(B747_engine_lastClock[i]*thrust)
     B747_engine_lastPos[i]=B747_engine_lastPos[i]+phaseNow
     
@@ -1293,10 +1324,10 @@ local initial_apu_oil = 0.75+(math.random()*0.25)
 ----- ENGINE OIL QUANTITY ---------------------------------------------------------------
 function B747_engine_oil_qty()
 
-    B747DR_engine_oil_qty_liters[0] = math.max(0, (B747_eng1oilStart - (B747_eng1startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, simDR_engine_N1_pct[0]))) * simDR_engine_oil_qty_ratio[0])
-    B747DR_engine_oil_qty_liters[1] = math.max(0, (B747_eng2oilStart - (B747_eng2startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, simDR_engine_N1_pct[1]))) * simDR_engine_oil_qty_ratio[0])
-    B747DR_engine_oil_qty_liters[2] = math.max(0, (B747_eng3oilStart - (B747_eng3startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, simDR_engine_N1_pct[2]))) * simDR_engine_oil_qty_ratio[0]) 
-	B747DR_engine_oil_qty_liters[3] = math.max(0, (B747_eng4oilStart - (B747_eng4startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, simDR_engine_N1_pct[3]))) * simDR_engine_oil_qty_ratio[0]) 
+    B747DR_engine_oil_qty_liters[0] = math.max(0, (B747_eng1oilStart - (B747_eng1startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, B747DR_display_N1[0]))) * simDR_engine_oil_qty_ratio[0])
+    B747DR_engine_oil_qty_liters[1] = math.max(0, (B747_eng2oilStart - (B747_eng2startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, B747DR_display_N1[1]))) * simDR_engine_oil_qty_ratio[0])
+    B747DR_engine_oil_qty_liters[2] = math.max(0, (B747_eng3oilStart - (B747_eng3startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, B747DR_display_N1[2]))) * simDR_engine_oil_qty_ratio[0]) 
+	B747DR_engine_oil_qty_liters[3] = math.max(0, (B747_eng4oilStart - (B747_eng4startupOilTxfr * B747_rescale(0.0, 0.0, 15.0, 1.0, B747DR_display_N1[3]))) * simDR_engine_oil_qty_ratio[0]) 
     B747DR_engine_apu_oil_qty_ratio=B747_animate_value(B747DR_engine_apu_oil_qty_ratio,initial_apu_oil - (B747DR_engine_apu_n2*0.003),0,1,20)
 end
 
@@ -1348,7 +1379,7 @@ function B747_startup_ignition()
     -- IGNITION IS REQUIRED FOR STARTUP WITH ENGINES RUNNING
     -- IF USER SHUTS DOWN AN ENGINE THEY WILL NEED TO MANUALLY RE-START OR RE-LOAD THE SIM
     for i = 0, 3 do
-        if simDR_engine_N2_pct[i] < 55.0                                            -- N2 is less than 55.0 %
+        if B747DR_display_N2[i] < 45.0                                            -- N2 is less than 55.0 %
             and B747_ignition_startup_flag[i+1] == 1                                -- ALLOWS ONLY ONE (1)) AUTO-IGNITE AT SIM LOAD
         then
             simDR_engine_auto_ignite_on[i] = 1                                      -- TURN ON AUTO-IGNITE
@@ -1413,7 +1444,7 @@ function B747_engines_EICAS_msg()
     -- STARTER CUTOUT 1
     
     if B747DR_bleedAir_engine1_start_valve_pos > 0.05
-        and simDR_engine_N2_pct[0] > 50.0
+        and B747DR_display_N2[0] > 45.0
     then
         B747DR_CAS_caution_status[61] = 1
     else
@@ -1423,7 +1454,7 @@ function B747_engines_EICAS_msg()
     -- STARTER CUTOUT 2
     
     if B747DR_bleedAir_engine2_start_valve_pos > 0.05
-        and simDR_engine_N2_pct[1] > 50.0
+        and B747DR_display_N2[1] > 45.0
     then
         B747DR_CAS_caution_status[62] = 1
     else
@@ -1433,7 +1464,7 @@ function B747_engines_EICAS_msg()
     -- STARTER CUTOUT 3
     
     if B747DR_bleedAir_engine3_start_valve_pos > 0.05
-        and simDR_engine_N2_pct[2] > 50.0
+        and B747DR_display_N2[2] > 45.0
     then
         B747DR_CAS_caution_status[63] = 1
     else
@@ -1443,7 +1474,7 @@ function B747_engines_EICAS_msg()
     -- STARTER CUTOUT 4
     
     if B747DR_bleedAir_engine4_start_valve_pos > 0.05
-        and simDR_engine_N2_pct[3] > 50.0
+        and B747DR_display_N2[3] > 45.0
     then
         B747DR_CAS_caution_status[64] = 1
     else
@@ -1484,19 +1515,19 @@ function B747_engines_EICAS_msg()
 
     -- >ENG 1 RPM LIM
    
-    if simDR_engine_N1_pct[0] >= 111.41 then B747DR_CAS_advisory_status[134] = 1 else B747DR_CAS_advisory_status[134] = 0 end
+    if B747DR_display_N1[0] >= 111.41 then B747DR_CAS_advisory_status[134] = 1 else B747DR_CAS_advisory_status[134] = 0 end
 
     -- >ENG 2 RPM LIM
     
-    if simDR_engine_N1_pct[1] >= 111.41 then B747DR_CAS_advisory_status[135] = 1 else B747DR_CAS_advisory_status[135] = 0 end
+    if B747DR_display_N1[1] >= 111.41 then B747DR_CAS_advisory_status[135] = 1 else B747DR_CAS_advisory_status[135] = 0 end
 
     -- >ENG 3 RPM LIM
     
-    if simDR_engine_N1_pct[2] >= 111.41 then B747DR_CAS_advisory_status[136] = 1 else B747DR_CAS_advisory_status[136] = 0 end
+    if B747DR_display_N1[2] >= 111.41 then B747DR_CAS_advisory_status[136] = 1 else B747DR_CAS_advisory_status[136] = 0 end
 
     -- >ENG 4 RPM LIM
     
-    if simDR_engine_N1_pct[3] >= 111.41 then B747DR_CAS_advisory_status[137] = 1 else B747DR_CAS_advisory_status[137] = 0 end
+    if B747DR_display_N1[3] >= 111.41 then B747DR_CAS_advisory_status[137] = 1 else B747DR_CAS_advisory_status[137] = 0 end
 
     -- CON IGNITION ON
     
@@ -1594,7 +1625,7 @@ function B747_flight_start_engines()
 
     -- ALL MODES ------------------------------------------------------------------------
 	B747_set_engines_all_modes()
-    B747DR_engine_TOGA_mode=0
+    B747DR_engine_TOGA_mode = 0
 
 
     -- COLD & DARK ----------------------------------------------------------------------
@@ -1702,7 +1733,7 @@ function B747_electronic_engine_control()
 
 
     --============================== ENGINE #1 ====================================--
-    if simDR_engine_N2_pct[0] < 50.0 then
+    if B747DR_display_N2[0] < 45.0 then
 
         if B747DR_bleedAir_engine1_start_valve_pos > 0.95 then                      -- START VALVE IS OPENED (START SWITCH PULLED) AND SUPPLYING BLEED AIR
             B747_engine_starter_on(0)                                               -- ENGAGE STARTER MOTOR
@@ -1719,7 +1750,7 @@ function B747_electronic_engine_control()
 
 
     --============================== ENGINE #2 ====================================--
-    if simDR_engine_N2_pct[1] < 50.0 then
+    if B747DR_display_N2[1] < 45.0 then
 
         if B747DR_bleedAir_engine2_start_valve_pos > 0.95 then                      -- START VALVE IS OPENED (START SWITCH PULLED) AND SUPPLYING BLEED AIR
             B747_engine_starter_on(1)                                               -- ENGAGE STARTER MOTOR
@@ -1736,7 +1767,7 @@ function B747_electronic_engine_control()
 
 
     --============================== ENGINE #3 ====================================--
-    if simDR_engine_N2_pct[2] < 50.0 then
+    if B747DR_display_N2[2] < 45.0 then
 
         if B747DR_bleedAir_engine3_start_valve_pos > 0.95 then                      -- START VALVE IS OPENED (START SWITCH PULLED) AND SUPPLYING BLEED AIR
             B747_engine_starter_on(2)                                               -- ENGAGE STARTER MOTOR
@@ -1753,7 +1784,7 @@ function B747_electronic_engine_control()
 
 
     --============================== ENGINE #4 ====================================--
-    if simDR_engine_N2_pct[3] < 50.0 then
+    if B747DR_display_N2[3] < 45.0 then
 
         if B747DR_bleedAir_engine4_start_valve_pos > 0.95 then                      -- START VALVE IS OPENED (START SWITCH PULLED) AND SUPPLYING BLEED AIR
             B747_engine_starter_on(3)                                               -- ENGAGE STARTER MOTOR
@@ -1945,7 +1976,7 @@ function B747_electronic_engine_control()
 
     -- AUTOSTART
     elseif B747DR_button_switch_position[45] > 0.5                                          -- AUTOSTART BUTTON DEPRESSED
-        and simDR_engine_N2_pct[0] > 15.0
+        and B747DR_display_N2[0] > 15.0
     then
         B747DR_engine_fuel_valve_pos[0] = 1                                                 -- OPEN THE VALVE
     else
@@ -1966,7 +1997,7 @@ function B747_electronic_engine_control()
 
     -- AUTOSTART
     elseif B747DR_button_switch_position[45] > 0.5                                          -- AUTOSTART BUTTON DEPRESSED
-        and simDR_engine_N2_pct[1] > 15.0
+        and B747DR_display_N2[1] > 15.0
     then
         B747DR_engine_fuel_valve_pos[1] = 1                                                 -- OPEN THE VALVE
     else
@@ -1987,7 +2018,7 @@ function B747_electronic_engine_control()
 
     -- AUTOSTART
     elseif B747DR_button_switch_position[45] > 0.5                                          -- AUTOSTART BUTTON DEPRESSED
-        and simDR_engine_N2_pct[2] > 15.0
+        and B747DR_display_N2[2] > 15.0
     then
         B747DR_engine_fuel_valve_pos[2] = 1                                                 -- OPEN THE VALVE
     else
@@ -2008,7 +2039,7 @@ function B747_electronic_engine_control()
 
     -- AUTOSTART
     elseif B747DR_button_switch_position[45] > 0.5                                          -- AUTOSTART BUTTON DEPRESSED
-        and simDR_engine_N2_pct[3] > 15.0
+        and B747DR_display_N2[3] > 15.0
     then
         B747DR_engine_fuel_valve_pos[3] = 1                                                 -- OPEN THE VALVE
     else
@@ -2044,16 +2075,23 @@ function before_physics()
     B747_electronic_engine_control()
 
 end
-
+local setSimConfig=false
+function hasSimConfig()
+	if B747DR_newsimconfig_data==1 then
+		if string.len(B747DR_simconfig_data) > 1 then
+			simConfigData["data"] = json.decode(B747DR_simconfig_data)
+			setSimConfig=true
+		else
+			return false
+		end
+	end
+	return setSimConfig
+end
 function after_physics()
-if debug_engines>0 then return end
+    if hasSimConfig()==false then return end
+    if debug_engines>0 then return end
 
     --Marauder28
-    if string.len(B747DR_simconfig_data) > 1 then
-        simConfigData["data"] = json.decode(B747DR_simconfig_data)
-    else
-        simConfigData["data"] = json.decode("[]")
-    end
 
     if string.match(simConfigData["data"].PLANE.engines, "CF6") then
         EGT_start_limit = 870
@@ -2068,7 +2106,11 @@ if debug_engines>0 then return end
         EGT_continuous_limit = 733
         EGT_max_limit = 785
     end
-    --End Marauder28
+     --End Marauder28
+    
+
+
+   
 
     B747_startup_ignition()
 
